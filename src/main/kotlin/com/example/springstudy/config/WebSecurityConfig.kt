@@ -1,5 +1,6 @@
 package com.example.springstudy.config
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -16,28 +17,15 @@ import kotlin.jvm.Throws
 @Configuration
 class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
 
+    @Autowired
+    private val authenticationProvider: CustomAuthenticationProvider? = null
+
     override fun configure(auth: AuthenticationManagerBuilder) {
-        val userDetailsService = InMemoryUserDetailsManager()
-
-        val user = User.withUsername("jin")
-                .password("1765")
-                .authorities("read")
-                .build()
-
-        userDetailsService.createUser(user)
-
-        /**
-         * configure() 메서드에서 UserDetailsService와 PasswordEncoder 설정
-         */
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
+        auth.authenticationProvider(authenticationProvider)
     }
 
-    @Throws
-    override fun configure(http: HttpSecurity){
-        http.httpBasic();
-        http.authorizeRequests()
-                .anyRequest().authenticated() // 모든 요청에 인증이 필요하다.
-//                .anyRequest().permitAll() // 모든 요청에 인증 없이 허용
+    override fun configure(http: HttpSecurity) {
+        http.httpBasic()
+        http.authorizeRequests().anyRequest().authenticated()
     }
 }
