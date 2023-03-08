@@ -2,6 +2,7 @@ package com.example.springstudy.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.User
@@ -10,11 +11,12 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
+import kotlin.jvm.Throws
 
 @Configuration
 class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
-    @Bean
-    override fun userDetailsService(): UserDetailsService {
+
+    override fun configure(auth: AuthenticationManagerBuilder) {
         val userDetailsService = InMemoryUserDetailsManager()
 
         val user = User.withUsername("jin")
@@ -24,22 +26,18 @@ class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
 
         userDetailsService.createUser(user)
 
-        return userDetailsService
-    }
-
-    @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        /*
-        NoOpPasswordEncoder 인스턴스는 암호화나 해시를 적용하지 않고 일반 텍스트처럼 처리
-        => 운영에서는 사용하면 안된다. (@Deprecated로 지정된 이유)
+        /**
+         * configure() 메서드에서 UserDetailsService와 PasswordEncoder 설정
          */
-        return  NoOpPasswordEncoder.getInstance()
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(NoOpPasswordEncoder.getInstance())
     }
 
-    override fun configure(http: HttpSecurity) {
+    @Throws
+    override fun configure(http: HttpSecurity){
         http.httpBasic();
         http.authorizeRequests()
-//                .anyRequest().authenticated() // 모든 요청에 인증이 필요하다.
-                .anyRequest().permitAll() // 모든 요청에 인증 없이 허용
+                .anyRequest().authenticated() // 모든 요청에 인증이 필요하다.
+//                .anyRequest().permitAll() // 모든 요청에 인증 없이 허용
     }
 }
