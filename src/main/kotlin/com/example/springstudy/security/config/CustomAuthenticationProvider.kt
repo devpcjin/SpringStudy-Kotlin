@@ -1,4 +1,4 @@
-package com.example.springstudy.config
+package com.example.springstudy.security.config
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationProvider
