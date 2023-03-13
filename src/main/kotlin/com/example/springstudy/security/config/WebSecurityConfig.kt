@@ -9,12 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 class WebSecurityConfig(): WebSecurityConfigurerAdapter() {
 
-    @Autowired
-    private val authenticationProvider: CustomAuthenticationProvider? = null
-
-    override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.authenticationProvider(authenticationProvider)
-    }
+//    @Autowired
+//    private val authenticationProvider: CustomAuthenticationProvider? = null
+//
+//    override fun configure(auth: AuthenticationManagerBuilder) {
+//        auth.authenticationProvider(authenticationProvider)
+//    }
 
     override fun configure(http: HttpSecurity) {
         http.httpBasic()

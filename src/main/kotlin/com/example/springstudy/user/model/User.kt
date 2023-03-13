@@ -6,19 +6,19 @@ import javax.persistence.*
 
 @Entity
 @Audited
-class User : Auditing(){
+class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
-
-    @Column(length = 100)
-    var email: String? = null
-
-    @Column(length = 100)
-    var password: String? = null
-
-    @Column
-    var authority: String? = null
+//
+//    @Column(length = 100)
+//    var email: String? = null
+//
+//    @Column(length = 100)
+//    var password: String? = null
+//
+//    @Column
+//    var authority: String? = null
 
 
 }

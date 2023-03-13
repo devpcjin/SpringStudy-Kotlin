@@ -6,23 +6,26 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class CustomUserDetails(
-        private val user: User
+        private val userName: String,
+        private val password: String,
+        private val authority: String
 ) : UserDetails {
 
     override fun getUsername(): String? {
-        return user.email
+        return userName
     }
 
     override fun getPassword(): String? {
-        return user.password
+        return password
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority(user.authority))
+        return mutableListOf(SimpleGrantedAuthority(authority))
     }
 
+
     override fun isAccountNonExpired(): Boolean {
-        return true
+        return true // 계정이 만료되거나 잠기지 않는다.
     }
 
     override fun isAccountNonLocked(): Boolean {
