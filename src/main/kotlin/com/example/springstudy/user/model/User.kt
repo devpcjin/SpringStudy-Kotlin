@@ -16,4 +16,9 @@ class User : Auditing(){
 
     @Column(length = 100)
     var password: String? = null
+
+    @Column
+    var authority: String? = null
+
+
 }
